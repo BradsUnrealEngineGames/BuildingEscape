@@ -48,6 +48,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	// If the physics handle is attached
+	if (!PhysicsHandle) { return; }
 	if (PhysicsHandle->GrabbedComponent) {
 		/// update location data and move the object that we're holding
 		UpdateInfoForGrabber();
@@ -76,7 +77,7 @@ void UGrabber::Grab()
 	///Line trace and find first physics body actor
 	FHitResult HitResult = GetFirstPhysicsBodyInReach();
 	auto ComponentToGrab = HitResult.GetComponent();
-
+	if (!PhysicsHandle) { return; }
 	/// If we hit something then attach a physics handle
 	if (ComponentToGrab) {
 		PhysicsHandle->GrabComponent(ComponentToGrab, NAME_None /* root bone name */, ComponentToGrab->GetOwner()->GetActorLocation() /* grab location */, true /* allow rotation */);
@@ -85,7 +86,8 @@ void UGrabber::Grab()
 
 void UGrabber::Release()
 {
-		PhysicsHandle->ReleaseComponent();
+	if (!PhysicsHandle) { return; }
+	PhysicsHandle->ReleaseComponent();
 }
 
 const FHitResult UGrabber::GetFirstPhysicsBodyInReach()
