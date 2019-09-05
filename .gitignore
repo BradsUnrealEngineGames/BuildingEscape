@@ -17,3 +17,7 @@
 */.vs
 *.vs
 .vs
+Binaries/
+Build/
+Intermediate/
+Saved/
